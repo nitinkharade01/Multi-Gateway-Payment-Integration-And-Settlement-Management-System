@@ -1,0 +1,33 @@
+# Java / Maven
+target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Node / frontend
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!**/.env.example
+application-secret.yml
+application-prod-secret.yml
+
+# Logs
+*.log
+logs/
+
+# IDE / OS
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

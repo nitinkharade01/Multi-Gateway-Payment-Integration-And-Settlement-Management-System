@@ -1,0 +1,20 @@
+server.port: 8087
+spring:
+  application.name: settlement-service
+  datasource:
+    url: ${DATABASE_URL:${DB_URL:jdbc:postgresql://localhost:5432/payment_platform}}
+    username: ${DB_USERNAME:${DB_USER:payment}}
+    password: ${DB_PASSWORD:payment}
+  jpa:
+    hibernate.ddl-auto: update
+    open-in-view: false
+  kafka.bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+  threads.virtual.enabled: true
+services.payment-url: ${PAYMENT_SERVICE_URL:http://localhost:8083}
+eureka.client.service-url.defaultZone: ${EUREKA_SERVER_URL:${EUREKA_URL:http://localhost:8761/eureka}}
+management.endpoints.web.exposure.include: health,info
+app:
+  kafka:
+    enabled: ${KAFKA_ENABLED:true}
+  redis:
+    enabled: ${REDIS_ENABLED:true}

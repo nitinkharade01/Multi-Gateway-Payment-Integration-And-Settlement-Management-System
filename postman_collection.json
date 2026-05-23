@@ -1,0 +1,66 @@
+{
+  "info": {
+    "name": "Multi-Gateway Payment Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "merchantId", "value": "mrc_demo_001" },
+    { "key": "apiKey", "value": "pk_live_replace_me" },
+    { "key": "apiSecret", "value": "sk_live_replace_me" },
+    { "key": "transactionId", "value": "txn_demo_001" }
+  ],
+  "item": [
+    {
+      "name": "Register Merchant",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/merchants/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"businessName\": \"Acme Retail Pvt Ltd\",\n  \"email\": \"payments@acme.example\",\n  \"phone\": \"+919876543210\",\n  \"singlePaymentLimit\": 500000.00\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Merchant API Key",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/merchants/{{merchantId}}/api-key"
+      }
+    },
+    {
+      "name": "Create Payment Order",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/payments/orders",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"merchantId\": \"{{merchantId}}\",\n  \"apiKey\": \"{{apiKey}}\",\n  \"apiSecret\": \"{{apiSecret}}\",\n  \"idempotencyKey\": \"cart-20260523-0001\",\n  \"amount\": 1250.00,\n  \"currency\": \"INR\",\n  \"paymentMode\": \"UPI\",\n  \"customerEmail\": \"buyer@example.com\",\n  \"customerPhone\": \"+919812345678\",\n  \"returnUrl\": \"https://example.com/checkout/status\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get Transaction Status",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/payments/status/{{transactionId}}"
+      }
+    },
+    {
+      "name": "Create Refund",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/refunds",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"merchantId\": \"{{merchantId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"amount\": 250.00,\n  \"reason\": \"Customer cancelled one item\"\n}"
+        }
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,47 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/payment_platform_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+  threads:
+    virtual:
+      enabled: true
+
+security:
+  jwt:
+    issuer: payment-platform
+    secret: ${JWT_SECRET:change-this-local-dev-secret-to-a-long-random-512-bit-value}
+    access-ttl-millis: ${JWT_EXPIRATION:900000}
+    refresh-ttl-days: 7
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+app:
+  kafka:
+    enabled: ${KAFKA_ENABLED:true}
+  redis:
+    enabled: ${REDIS_ENABLED:true}
+

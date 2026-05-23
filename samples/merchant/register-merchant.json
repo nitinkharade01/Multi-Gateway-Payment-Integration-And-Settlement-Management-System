@@ -1,0 +1,7 @@
+{
+  "businessName": "Acme Retail Pvt Ltd",
+  "email": "payments@acme.example",
+  "phone": "+919876543210",
+  "singlePaymentLimit": 500000.00
+}
+

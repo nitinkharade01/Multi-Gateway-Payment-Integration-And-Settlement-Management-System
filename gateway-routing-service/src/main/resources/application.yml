@@ -1,0 +1,18 @@
+server.port: 8084
+spring:
+  application.name: gateway-routing-service
+  datasource:
+    url: ${DATABASE_URL:${DB_URL:jdbc:postgresql://localhost:5432/payment_platform}}
+    username: ${DB_USERNAME:${DB_USER:payment}}
+    password: ${DB_PASSWORD:payment}
+  jpa:
+    hibernate.ddl-auto: update
+    open-in-view: false
+  threads.virtual.enabled: true
+eureka.client.service-url.defaultZone: ${EUREKA_SERVER_URL:${EUREKA_URL:http://localhost:8761/eureka}}
+management.endpoints.web.exposure.include: health,info
+app:
+  kafka:
+    enabled: ${KAFKA_ENABLED:true}
+  redis:
+    enabled: ${REDIS_ENABLED:true}

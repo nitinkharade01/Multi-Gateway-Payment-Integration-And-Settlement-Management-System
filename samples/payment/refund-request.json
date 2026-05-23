@@ -1,0 +1,7 @@
+{
+  "merchantId": "mrc_demo_001",
+  "transactionId": "txn_demo_001",
+  "amount": 250.00,
+  "reason": "Customer cancelled one item"
+}
+

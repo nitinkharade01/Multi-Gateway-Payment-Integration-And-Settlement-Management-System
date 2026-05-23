@@ -1,0 +1,13 @@
+{
+  "merchantId": "mrc_demo_001",
+  "apiKey": "pk_live_replace_me",
+  "apiSecret": "sk_live_replace_me",
+  "idempotencyKey": "cart-20260523-0001",
+  "amount": 1250.00,
+  "currency": "INR",
+  "paymentMode": "UPI",
+  "customerEmail": "buyer@example.com",
+  "customerPhone": "+919812345678",
+  "returnUrl": "https://example.com/checkout/status"
+}
+

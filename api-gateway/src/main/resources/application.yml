@@ -1,0 +1,48 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth
+          uri: lb://auth-service
+          predicates: [ Path=/api/auth/** ]
+        - id: merchant
+          uri: lb://merchant-service
+          predicates: [ Path=/api/merchants/** ]
+        - id: payment
+          uri: lb://payment-service
+          predicates: [ Path=/api/payments/** ]
+        - id: gateway-routing
+          uri: lb://gateway-routing-service
+          predicates: [ Path=/api/gateway/** ]
+        - id: webhook
+          uri: lb://webhook-service
+          predicates: [ Path=/api/webhooks/** ]
+        - id: refunds
+          uri: lb://refund-service
+          predicates: [ Path=/api/refunds/** ]
+        - id: settlements
+          uri: lb://settlement-service
+          predicates: [ Path=/api/settlements/** ]
+        - id: reconciliation
+          uri: lb://reconciliation-service
+          predicates: [ Path=/api/reconciliation/** ]
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:${EUREKA_URL:http://localhost:8761/eureka}}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}

@@ -1,0 +1,4 @@
+transaction_id,amount,status,gateway_reference
+txn_demo_001,1250.00,PAID,rzp_demo_001
+txn_demo_002,499.00,FAILED,rzp_demo_002
+

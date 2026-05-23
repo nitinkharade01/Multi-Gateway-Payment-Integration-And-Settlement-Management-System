@@ -1,0 +1,48 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: notification-service
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/payment_platform_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    listener:
+      auto-startup: ${KAFKA_ENABLED:true}
+    consumer:
+      group-id: notification-service
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.fintek.common.events
+  threads:
+    virtual:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+app:
+  kafka:
+    enabled: ${KAFKA_ENABLED:true}
+  redis:
+    enabled: ${REDIS_ENABLED:true}
+
