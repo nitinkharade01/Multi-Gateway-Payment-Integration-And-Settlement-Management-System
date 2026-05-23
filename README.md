@@ -151,6 +151,25 @@ For Render frontend deployment:
 VITE_API_BASE_URL=https://<api-gateway-service>.onrender.com
 ```
 
+Recommended Render frontend setup:
+
+```text
+Type: Static Site
+Root Directory: frontend-react
+Build Command: npm install && npm run build
+Publish Directory: dist
+```
+
+Docker frontend setup is also supported:
+
+```text
+Type: Web Service
+Root Directory: frontend-react
+Docker Build Context Directory: .
+Dockerfile Path: ./Dockerfile
+Health Check Path: /
+```
+
 ## Render Deployment
 
 Full Render instructions are in [docs/RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md).

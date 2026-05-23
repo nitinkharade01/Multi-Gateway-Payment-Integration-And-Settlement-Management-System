@@ -155,7 +155,28 @@ Use this Render health check path for every web service:
 
 ## Frontend
 
-Deploy `frontend-react` as a static site or Docker web service. Set:
+Preferred option: deploy `frontend-react` as a Render Static Site.
+
+```text
+Root Directory: frontend-react
+Build Command: npm install && npm run build
+Publish Directory: dist
+Environment Variable:
+VITE_API_BASE_URL=https://<api-gateway-service>.onrender.com
+```
+
+Alternative option: deploy it as a Docker Web Service.
+
+```text
+Root Directory: frontend-react
+Docker Build Context Directory: .
+Dockerfile Path: ./Dockerfile
+Health Check Path: /
+Environment Variable:
+VITE_API_BASE_URL=https://<api-gateway-service>.onrender.com
+```
+
+The frontend Docker image uses nginx and listens on Render's `$PORT` automatically. For either option, set:
 
 ```text
 VITE_API_BASE_URL=https://<api-gateway-service>.onrender.com
