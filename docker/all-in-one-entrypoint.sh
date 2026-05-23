@@ -3,7 +3,9 @@ set -eu
 
 PROFILE="${SPRING_PROFILES_ACTIVE:-render}"
 PUBLIC_PORT="${PORT:-8080}"
-DISCOVERY_DELAY_SECONDS="${DISCOVERY_STARTUP_DELAY_SECONDS:-35}"
+API_GATEWAY_DELAY_SECONDS="${API_GATEWAY_STARTUP_DELAY_SECONDS:-2}"
+DISCOVERY_DELAY_SECONDS="${DISCOVERY_STARTUP_DELAY_SECONDS:-20}"
+SERVICE_STARTUP_DELAY_SECONDS="${SERVICE_STARTUP_DELAY_SECONDS:-2}"
 ENABLED_SERVICES="${ENABLED_SERVICES:-all}"
 JAVA_OPTS="${JAVA_OPTS:--XX:+UseContainerSupport -XX:+UseSerialGC -XX:MaxRAMPercentage=8.0}"
 
@@ -54,41 +56,53 @@ stop_all() {
 trap stop_all INT TERM
 
 start_service "discovery-server" "discovery-server-1.0.0-SNAPSHOT.jar" "8761"
-echo "Waiting ${DISCOVERY_DELAY_SECONDS}s for discovery-server startup"
+echo "Waiting ${API_GATEWAY_DELAY_SECONDS}s before starting public api-gateway on Render port ${PUBLIC_PORT}"
+sleep "$API_GATEWAY_DELAY_SECONDS"
+
+start_service "api-gateway" "api-gateway-1.0.0-SNAPSHOT.jar" "$PUBLIC_PORT"
+
+echo "Waiting ${DISCOVERY_DELAY_SECONDS}s before starting internal backend services"
 sleep "$DISCOVERY_DELAY_SECONDS"
 
 if is_enabled "auth-service"; then
   start_service "auth-service" "auth-service-1.0.0-SNAPSHOT.jar" "8081"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "merchant-service"; then
   start_service "merchant-service" "merchant-service-1.0.0-SNAPSHOT.jar" "8082"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "gateway-routing-service"; then
   start_service "gateway-routing-service" "gateway-routing-service-1.0.0-SNAPSHOT.jar" "8084"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "payment-service"; then
   start_service "payment-service" "payment-service-1.0.0-SNAPSHOT.jar" "8083"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "webhook-service"; then
   start_service "webhook-service" "webhook-service-1.0.0-SNAPSHOT.jar" "8085"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "refund-service"; then
   start_service "refund-service" "refund-service-1.0.0-SNAPSHOT.jar" "8086"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "settlement-service"; then
   start_service "settlement-service" "settlement-service-1.0.0-SNAPSHOT.jar" "8087"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "reconciliation-service"; then
   start_service "reconciliation-service" "reconciliation-service-1.0.0-SNAPSHOT.jar" "8088"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "fraud-monitoring-service"; then
   start_service "fraud-monitoring-service" "fraud-monitoring-service-1.0.0-SNAPSHOT.jar" "8089"
+  sleep "$SERVICE_STARTUP_DELAY_SECONDS"
 fi
 if is_enabled "notification-service"; then
   start_service "notification-service" "notification-service-1.0.0-SNAPSHOT.jar" "8090"
 fi
-
-start_service "api-gateway" "api-gateway-1.0.0-SNAPSHOT.jar" "$PUBLIC_PORT"
 
 while true; do
   for pid in $PIDS; do

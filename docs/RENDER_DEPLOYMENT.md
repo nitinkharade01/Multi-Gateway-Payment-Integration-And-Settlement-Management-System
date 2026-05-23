@@ -116,7 +116,9 @@ Use these extra environment variables for the all-in-one container:
 | `ROUTING_SERVICE_URL` | `http://localhost:8084` |
 | `PAYMENT_SERVICE_URL` | `http://localhost:8083` |
 | `ENABLED_SERVICES` | `all` |
-| `DISCOVERY_STARTUP_DELAY_SECONDS` | `35` |
+| `API_GATEWAY_STARTUP_DELAY_SECONDS` | `2` |
+| `DISCOVERY_STARTUP_DELAY_SECONDS` | `20` |
+| `SERVICE_STARTUP_DELAY_SECONDS` | `2` |
 
 All DB, JWT, webhook, Kafka, Redis, and CORS environment variables from the sections above still apply.
 

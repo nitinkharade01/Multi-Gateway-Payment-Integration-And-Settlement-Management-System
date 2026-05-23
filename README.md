@@ -205,6 +205,14 @@ Health Check Path: /actuator/health
 
 Set `EUREKA_SERVER_URL=http://localhost:8761/eureka/` for the single-container deployment. The API Gateway listens on Render's `$PORT`; the other services run on internal ports `8761`, `8081` through `8090`.
 
+The container starts API Gateway early so Render can detect the public port. Optional startup tuning:
+
+```text
+API_GATEWAY_STARTUP_DELAY_SECONDS=2
+DISCOVERY_STARTUP_DELAY_SECONDS=20
+SERVICE_STARTUP_DELAY_SECONDS=2
+```
+
 All backend services in one container need more memory than a normal single service. Render Free may not be enough for the full platform; use a larger instance or set `ENABLED_SERVICES` to a smaller comma-separated list.
 
 ## Render Build And Start Commands
