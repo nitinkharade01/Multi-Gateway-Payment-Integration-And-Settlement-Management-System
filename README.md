@@ -190,6 +190,23 @@ Render health check path for every service:
 /actuator/health
 ```
 
+### Single Render Web Service
+
+The root `Dockerfile` supports running all backend modules in one Render Docker Web Service. In the Render form, use:
+
+```text
+Language: Docker
+Root Directory: leave blank
+Docker Build Context Directory: .
+Dockerfile Path: ./Dockerfile
+Docker Command: leave blank
+Health Check Path: /actuator/health
+```
+
+Set `EUREKA_SERVER_URL=http://localhost:8761/eureka/` for the single-container deployment. The API Gateway listens on Render's `$PORT`; the other services run on internal ports `8761`, `8081` through `8090`.
+
+All backend services in one container need more memory than a normal single service. Render Free may not be enough for the full platform; use a larger instance or set `ENABLED_SERVICES` to a smaller comma-separated list.
+
 ## Render Build And Start Commands
 
 Discovery Server:
@@ -328,4 +345,3 @@ git remote set-url origin https://github.com/nitinkharade01/Multi-Gateway-Paymen
 This system separates the main money-moving responsibilities into focused services. The payment service owns idempotent order and transaction creation. The routing service owns gateway choice and fallback. The webhook service owns untrusted gateway callbacks, HMAC verification, replay protection, and deduplication. Refund, settlement, reconciliation, fraud, and notification services each handle their own post-payment workflow.
 
 For deployment, the project uses Java 21, environment-driven secrets, PostgreSQL through JDBC URLs, Render-compatible dynamic ports, and optional Kafka/Redis so the demo can run on Render free tier without external brokers or caches.
-

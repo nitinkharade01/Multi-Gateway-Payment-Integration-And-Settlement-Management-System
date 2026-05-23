@@ -91,6 +91,41 @@ For the first free-tier deployment, deploy only:
 
 Keep `KAFKA_ENABLED=false` and `REDIS_ENABLED=false`.
 
+## Single Render Web Service Docker Deployment
+
+If you want all backend modules in one Render Web Service, use the root `Dockerfile`. It builds every backend JAR and starts all services inside one container. The API Gateway is the only public HTTP entrypoint and listens on Render's `$PORT`.
+
+Use these Render fields:
+
+| Field | Value |
+| --- | --- |
+| Language | `Docker` |
+| Branch | `main` |
+| Root Directory | leave blank |
+| Docker Build Context Directory | `.` |
+| Dockerfile Path | `./Dockerfile` |
+| Docker Command | leave blank |
+| Health Check Path | `/actuator/health` |
+
+Use these extra environment variables for the all-in-one container:
+
+| Variable | Value |
+| --- | --- |
+| `EUREKA_SERVER_URL` | `http://localhost:8761/eureka/` |
+| `MERCHANT_SERVICE_URL` | `http://localhost:8082` |
+| `ROUTING_SERVICE_URL` | `http://localhost:8084` |
+| `PAYMENT_SERVICE_URL` | `http://localhost:8083` |
+| `ENABLED_SERVICES` | `all` |
+| `DISCOVERY_STARTUP_DELAY_SECONDS` | `35` |
+
+All DB, JWT, webhook, Kafka, Redis, and CORS environment variables from the sections above still apply.
+
+Running every Spring Boot service in one container is convenient for a demo, but it is memory-heavy. Render Free is likely to run out of memory with all services enabled. Use at least a 2 GB instance for the full backend, or set `ENABLED_SERVICES` to a smaller comma-separated list such as:
+
+```text
+auth-service,merchant-service,gateway-routing-service,payment-service
+```
+
 ## Build And Start Commands
 
 | Service | Build Command | Start Command |
@@ -133,4 +168,3 @@ Also include the frontend Render URL in `CORS_ALLOWED_ORIGINS` on the API gatewa
 - Kafka publishers log and skip event send when `KAFKA_ENABLED=false`.
 - Notification Kafka listener is not created when `KAFKA_ENABLED=false`.
 - Redis health checks are disabled for Render in Redis-using services.
-
