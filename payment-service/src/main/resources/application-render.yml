@@ -41,7 +41,7 @@ eureka:
 management:
   health:
     redis:
-      enabled: false
+      enabled: ${REDIS_ENABLED:false}
   endpoints:
     web:
       exposure:
@@ -57,4 +57,3 @@ app:
     enabled: ${REDIS_ENABLED:false}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
-

@@ -15,7 +15,7 @@ Use local profile values through environment variables or `application-local.yml
 $env:SPRING_PROFILES_ACTIVE='local'
 $env:DATABASE_URL='jdbc:postgresql://localhost:5432/payment_platform_db'
 $env:DB_USERNAME='postgres'
-$env:DB_PASSWORD='root123'
+$env:DB_PASSWORD='<LOCAL_ONLY_PASSWORD>'
 $env:KAFKA_ENABLED='true'
 $env:REDIS_ENABLED='true'
 ```
@@ -94,4 +94,3 @@ Invoke-WebRequest http://localhost:8761/actuator/health -UseBasicParsing
 Invoke-WebRequest http://localhost:8080/actuator/health -UseBasicParsing
 Invoke-WebRequest http://localhost:8081/actuator/health -UseBasicParsing
 ```
-

@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:${DB_URL:jdbc:postgresql://localhost:5432/payment_platform}}
     username: ${DB_USERNAME:${DB_USER:payment}}
-    password: ${DB_PASSWORD:payment}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate.ddl-auto: update
     open-in-view: false
@@ -13,9 +13,9 @@ spring:
 webhook:
   replay-window-seconds: 300
   secrets:
-    razorpay: ${RAZORPAY_WEBHOOK_SECRET:${WEBHOOK_SECRET:local-dev-webhook-secret}}
-    cashfree: ${CASHFREE_WEBHOOK_SECRET:${WEBHOOK_SECRET:local-dev-webhook-secret}}
-    payu: ${PAYU_WEBHOOK_SECRET:${WEBHOOK_SECRET:local-dev-webhook-secret}}
+    razorpay: ${RAZORPAY_WEBHOOK_SECRET:${WEBHOOK_SECRET}}
+    cashfree: ${CASHFREE_WEBHOOK_SECRET:${WEBHOOK_SECRET}}
+    payu: ${PAYU_WEBHOOK_SECRET:${WEBHOOK_SECRET}}
 services.payment-url: ${PAYMENT_SERVICE_URL:http://localhost:8083}
 eureka.client.service-url.defaultZone: ${EUREKA_SERVER_URL:${EUREKA_URL:http://localhost:8761/eureka}}
 management.endpoints.web.exposure.include: health,info

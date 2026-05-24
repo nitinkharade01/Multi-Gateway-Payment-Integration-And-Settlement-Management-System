@@ -5,7 +5,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:${DB_URL:jdbc:postgresql://localhost:5432/payment_platform}}
     username: ${DB_USERNAME:${DB_USER:payment}}
-    password: ${DB_PASSWORD:payment}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate.ddl-auto: update
     open-in-view: false
@@ -14,7 +14,7 @@ spring:
 security:
   jwt:
     issuer: payment-platform
-    secret: ${JWT_SECRET:change-this-demo-secret-to-a-long-random-512-bit-value-before-production-use}
+    secret: ${JWT_SECRET}
     access-ttl-millis: ${JWT_EXPIRATION:900000}
     refresh-ttl-days: 7
 eureka.client.service-url.defaultZone: ${EUREKA_SERVER_URL:${EUREKA_URL:http://localhost:8761/eureka}}

@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:${DB_URL:jdbc:postgresql://localhost:5432/payment_platform}}
     username: ${DB_USERNAME:${DB_USER:payment}}
-    password: ${DB_PASSWORD:payment}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate.ddl-auto: update
     open-in-view: false

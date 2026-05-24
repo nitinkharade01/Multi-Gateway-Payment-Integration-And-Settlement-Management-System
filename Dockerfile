@@ -2,7 +2,7 @@ FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /workspace
 COPY . .
-RUN mvn -B -DskipTests package
+RUN mvn -B clean package -DskipTests
 RUN mkdir -p /workspace/app-jars \
     && cp discovery-server/target/discovery-server-1.0.0-SNAPSHOT.jar /workspace/app-jars/ \
     && cp api-gateway/target/api-gateway-1.0.0-SNAPSHOT.jar /workspace/app-jars/ \
@@ -21,7 +21,7 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /opt/payment-platform
 COPY --from=build /workspace/app-jars/*.jar ./
-COPY docker/all-in-one-entrypoint.sh ./all-in-one-entrypoint.sh
-RUN chmod +x ./all-in-one-entrypoint.sh
+COPY scripts/render-start.sh ./render-start.sh
+RUN chmod +x ./render-start.sh
 EXPOSE 8080
-ENTRYPOINT ["/opt/payment-platform/all-in-one-entrypoint.sh"]
+ENTRYPOINT ["/opt/payment-platform/render-start.sh"]

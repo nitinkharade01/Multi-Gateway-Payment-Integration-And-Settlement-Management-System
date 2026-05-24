@@ -105,7 +105,7 @@ Recommended local environment:
 $env:SPRING_PROFILES_ACTIVE='local'
 $env:DATABASE_URL='jdbc:postgresql://localhost:5432/payment_platform_db'
 $env:DB_USERNAME='postgres'
-$env:DB_PASSWORD='root123'
+$env:DB_PASSWORD='<LOCAL_ONLY_PASSWORD>'
 $env:KAFKA_ENABLED='true'
 $env:REDIS_ENABLED='true'
 ```
@@ -279,7 +279,7 @@ Local DB variables:
 ```text
 DATABASE_URL=jdbc:postgresql://localhost:5432/payment_platform_db
 DB_USERNAME=postgres
-DB_PASSWORD=root123
+DB_PASSWORD=<LOCAL_ONLY_PASSWORD>
 ```
 
 ## API Endpoints

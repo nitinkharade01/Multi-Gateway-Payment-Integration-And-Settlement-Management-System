@@ -42,7 +42,7 @@ eureka:
 management:
   health:
     redis:
-      enabled: false
+      enabled: ${REDIS_ENABLED:false}
   endpoints:
     web:
       exposure:
@@ -52,10 +52,12 @@ management:
       show-details: always
 
 app:
+  admin:
+    default-email: ${ADMIN_DEFAULT_EMAIL:admin@payment.com}
+    default-password: ${ADMIN_DEFAULT_PASSWORD:}
   kafka:
     enabled: ${KAFKA_ENABLED:false}
   redis:
     enabled: ${REDIS_ENABLED:false}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
-

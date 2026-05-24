@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: ${LOCAL_POSTGRES_DB:-payment_platform_db}
       POSTGRES_USER: ${LOCAL_DB_USERNAME:-payment}
-      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:-payment}
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:?Set LOCAL_DB_PASSWORD}
     ports: [ "${POSTGRES_HOST_PORT:-5432}:5432" ]
     volumes: [ "postgres-data:/var/lib/postgresql/data" ]
     healthcheck:
@@ -58,14 +58,14 @@ services:
       DATABASE_URL: ${DATABASE_URL:-jdbc:postgresql://postgres:5432/payment_platform_db}
       DB_USER: ${DB_USERNAME:-payment}
       DB_USERNAME: ${DB_USERNAME:-payment}
-      DB_PASSWORD: ${DB_PASSWORD:-payment}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD}
       REDIS_HOST: redis
       REDIS_ENABLED: "true"
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       KAFKA_ENABLED: "true"
       EUREKA_URL: http://discovery-server:8761/eureka
       EUREKA_SERVER_URL: http://discovery-server:8761/eureka
-      JWT_SECRET: ${JWT_SECRET:-change-this-compose-secret-to-a-long-random-512-bit-value-before-production-use}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
     depends_on: [ postgres, redis, kafka, discovery-server ]
     ports: [ "8081:8081" ]
 

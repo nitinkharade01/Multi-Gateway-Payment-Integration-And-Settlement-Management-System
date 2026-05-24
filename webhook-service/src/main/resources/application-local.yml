@@ -7,7 +7,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/payment_platform_db}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:root123}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -23,9 +23,9 @@ spring:
 webhook:
   replay-window-seconds: 300
   secrets:
-    razorpay: ${RAZORPAY_WEBHOOK_SECRET:razorpay-local-secret}
-    cashfree: ${CASHFREE_WEBHOOK_SECRET:cashfree-local-secret}
-    payu: ${PAYU_WEBHOOK_SECRET:payu-local-secret}
+    razorpay: ${RAZORPAY_WEBHOOK_SECRET:${WEBHOOK_SECRET}}
+    cashfree: ${CASHFREE_WEBHOOK_SECRET:${WEBHOOK_SECRET}}
+    payu: ${PAYU_WEBHOOK_SECRET:${WEBHOOK_SECRET}}
 
 services:
   payment-url: ${PAYMENT_SERVICE_URL:http://localhost:8083}
@@ -46,4 +46,3 @@ app:
     enabled: ${KAFKA_ENABLED:true}
   redis:
     enabled: ${REDIS_ENABLED:true}
-

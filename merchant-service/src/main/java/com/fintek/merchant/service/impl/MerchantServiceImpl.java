@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,14 +35,23 @@ public class MerchantServiceImpl implements MerchantService {
     private final MerchantValidator validator;
     private final MerchantMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final String apiSecretPepper;
 
     public MerchantServiceImpl(MerchantRepository merchants, MerchantApiKeyRepository apiKeys,
                                MerchantValidator validator, MerchantMapper mapper, PasswordEncoder passwordEncoder) {
+        this(merchants, apiKeys, validator, mapper, passwordEncoder, "");
+    }
+
+    @Autowired
+    public MerchantServiceImpl(MerchantRepository merchants, MerchantApiKeyRepository apiKeys,
+                               MerchantValidator validator, MerchantMapper mapper, PasswordEncoder passwordEncoder,
+                               @Value("${app.security.api-secret-pepper:}") String apiSecretPepper) {
         this.merchants = merchants;
         this.apiKeys = apiKeys;
         this.validator = validator;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
+        this.apiSecretPepper = apiSecretPepper == null ? "" : apiSecretPepper;
     }
 
     @Override
@@ -109,7 +120,7 @@ public class MerchantServiceImpl implements MerchantService {
         apiKey.setId(UUID.randomUUID().toString());
         apiKey.setMerchant(merchant);
         apiKey.setApiKey(ApiCredentials.apiKey());
-        apiKey.setSecretHash(passwordEncoder.encode(rawSecret));
+        apiKey.setSecretHash(passwordEncoder.encode(secretMaterial(rawSecret)));
         apiKey.setEnabled(true);
         apiKey.setCreatedAt(now);
         apiKey.setExpiresAt(now.plus(365, ChronoUnit.DAYS));
@@ -128,7 +139,7 @@ public class MerchantServiceImpl implements MerchantService {
         if (!apiKey.usableAt(Instant.now())) {
             throw new MerchantException(401, "Merchant API key is expired or disabled");
         }
-        if (!passwordEncoder.matches(request.apiSecret(), apiKey.getSecretHash())) {
+        if (!passwordEncoder.matches(secretMaterial(request.apiSecret()), apiKey.getSecretHash())) {
             throw new MerchantException(401, "Merchant API secret is invalid");
         }
         if (merchant.getStatus() != MerchantStatus.ACTIVE) {
@@ -140,5 +151,9 @@ public class MerchantServiceImpl implements MerchantService {
 
     private Merchant requireMerchant(String merchantId) {
         return merchants.findById(merchantId).orElseThrow(() -> new MerchantException(404, "Merchant not found"));
+    }
+
+    private String secretMaterial(String rawSecret) {
+        return rawSecret + apiSecretPepper;
     }
 }
