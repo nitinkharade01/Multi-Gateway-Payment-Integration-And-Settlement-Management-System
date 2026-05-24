@@ -31,9 +31,9 @@ jar_for() {
 }
 
 require_jar() {
-  jar="$APP_DIR/$1"
-  if [ ! -f "$jar" ]; then
-    log "ERROR missing required jar: $jar"
+  required_jar_path="$APP_DIR/$1"
+  if [ ! -f "$required_jar_path" ]; then
+    log "ERROR missing required jar: $required_jar_path"
     exit 1
   fi
 }
